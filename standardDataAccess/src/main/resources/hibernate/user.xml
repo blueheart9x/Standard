@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<sql-query name="login">
+	 	<![CDATA[ SELECT u.id, u.email, u.password, u.salt_value as saltValue, u.full_name as fullName, u.mobile, u.skype, u.facebook
+	 				, u.avatar, u.user_type as userType, u.status, u.created_at as createdAt, u.last_login as lastLogin
+	 				, u.uuid, u.address, u.company_id as companyId, c.name as companyName, c.career_id as careerId, c.type as companyType
+	 				FROM user u LEFT JOIN company c ON c.id = u.company_id
+			 	 	WHERE (u.email = :accountName or u.mobile = :accountName) ]]>
+	</sql-query>
+	
+	<sql-query name="findUserByUUID">
+	 	<![CDATA[ SELECT u.id, u.email, u.password, u.salt_value as saltValue, u.full_name as fullName, u.mobile, u.skype, u.facebook
+	 				, u.avatar, u.user_type as userType, u.status, u.created_at as createdAt, u.last_login as lastLogin
+	 				, u.uuid, u.address, c.name as companyName
+ 				 FROM user u LEFT JOIN company c ON c.id = u.company_id
+		 	 	 WHERE u.uuid = :uuid ]]>
+	</sql-query>
+	
+	<sql-query name="findUserByUUIDToUpdate">
+	 	<![CDATA[ SELECT u.email, u.full_name as fullName, u.mobile, u.skype, u.facebook, u.avatar, u.uuid, u.address, c.name as companyName
+ 				 FROM user u LEFT JOIN company c ON c.id = u.company_id
+		 	 	 WHERE u.uuid = :uuid ]]>
+	</sql-query>
+	
+	<sql-query name="insertUser">
+	 	<![CDATA[
+	 		 INSERT INTO user (email, password, salt_value, full_name, mobile, skype, facebook, avatar, user_type, company_id, uuid, address)
+	 		  VALUES (
+	 		  	:email, :password, :salt_value, :full_name, :mobile, :skype, :facebook, :avatar, :user_type, :company_id, :uuid, :address
+	 		  )
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="updateUser">
+	 	<![CDATA[
+	 		 UPDATE user SET full_name = :full_name, mobile = :mobile, skype = :skype, avatar = :avatar, address = :address
+	 		 WHERE uuid = :uuid
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="updateUserCompany">
+	 	<![CDATA[
+	 		 UPDATE user_company SET link_cv = :link_cv
+	 		 WHERE user_id = :user_id AND company_id = :company_id
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="getIdUserCompany">
+	 	<![CDATA[
+	 		 SELECT id FROM user_company where user_id = :user_id AND company_id = :company_id
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="changePasswordUser">
+	 	<![CDATA[
+	 		 UPDATE user SET password = :password, salt_value = :salt_value
+	 		 WHERE uuid = :uuid
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="changePasswordCompany">
+	 	<![CDATA[
+	 		 UPDATE company SET password = :password, salt_value = :salt_value
+	 		 WHERE uuid = :uuid
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="checkEmailExists">
+	 	<![CDATA[
+	 		  SELECT id FROM ( SELECT id, email FROM user UNION SELECT id, email FROM company ) a
+ 			  WHERE email = :email
+	 	 ]]>
+	</sql-query>
+        
+        <sql-query name="checkEmailExistsUser">
+	 	<![CDATA[
+	 		  SELECT id FROM user
+ 			  WHERE email = :email
+	 	 ]]>
+	</sql-query>
+        <sql-query name="checkEmailExistsCompany">
+	 	<![CDATA[
+	 		  SELECT id FROM company
+ 			  WHERE email = :email
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="checkMobileExists">
+	 	<![CDATA[
+	 		 SELECT id FROM user WHERE mobile = :mobile
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="checkCurrentPasswordUser">
+	 	<![CDATA[ SELECT password, salt_value as saltValue FROM user WHERE uuid = :uuid ]]>
+	</sql-query>
+	
+	<sql-query name="checkCurrentPasswordCompany">
+	 	<![CDATA[ SELECT password, salt_value as saltValue FROM company WHERE uuid = :uuid ]]>
+	</sql-query>
+	
+	<sql-query name="findDetailUserInterview">
+	 	<![CDATA[ 
+	 		SELECT u.full_name as fullName, u.mobile, u.avatar, u.address, l.job_name as jobName, l.link_cv as linkCv
+	 		, GROUP_CONCAT(li.full_name SEPARATOR '###') AS peopleLstStr
+			FROM letter l INNER JOIN _letter_interview li ON l.id = li.letter_id
+			INNER JOIN user u ON u.id = l.user_to
+			WHERE l.password = :pw
+	 	 ]]>
+	</sql-query>
+	
+</hibernate-mapping>

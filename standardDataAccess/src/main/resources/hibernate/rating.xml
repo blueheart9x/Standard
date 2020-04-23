@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<sql-query name="findAllRatingByLetterId">
+	 	<![CDATA[
+	 		SELECT u.full_name AS fullName, rd.define_name AS defineName, rr.input_type AS inputType, rr.result_value AS resultValue
+			FROM _rating_result rr
+			INNER JOIN _rating_define rd ON rd.id = rr.rating_define_id
+			INNER JOIN letter l ON l.id = rr.object_id
+			INNER JOIN user u ON u.id = rr.user_id_interview
+			WHERE rr.object_type='LETTER' AND l.id = :letterId
+			ORDER BY rr.user_id_interview, rd.no
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="findRatingFinal">
+	 	<![CDATA[
+	 		SELECT l.job_name AS jobName, u.full_name as fullName, rsf.status
+			, rsf.interview_note AS interviewNote, rsf.created_at AS createdAt
+			FROM _rating_result_final rsf
+			INNER JOIN letter l ON l.id = rsf.object_id
+			INNER JOIN user u ON u.id = rsf.user_id WHERE l.id = :letterId
+	 	 ]]>
+	</sql-query>
+
+	<sql-query name="insertRating">
+	 	<![CDATA[
+	 		 INSERT INTO rating (job_id, user_id, note, rating) VALUES (:job_id, :user_id, :note, :rating)
+	 	 ]]>
+	</sql-query>
+	
+</hibernate-mapping>

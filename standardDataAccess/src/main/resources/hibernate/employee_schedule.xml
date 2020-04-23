@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<sql-query name="findDetailEmployeeSchedule">
+	 	<![CDATA[ SELECT esc.id, esc.description, esc.start_day AS startDay, esc.end_day AS endDay
+	 				, esc.start_time AS startTime, esc.end_time AS endTime, esc.recipients, esc.total_leave AS totalLeave
+	 				, esc.status_code AS statusCode, esc.created_at AS createdAt   
+ 				 	FROM employee_schedule esc
+ 				 	INNER JOIN employee_status est ON est.id = esc.employee_status_id
+ 				 	INNER JOIN employee e 		   ON e.id   = esc.employee_id
+			 	 	WHERE esc.id = :id ]]>
+	</sql-query>
+	
+	<sql-query name="deleteEmployeeSchedule">
+	 	<![CDATA[
+	 		 DELETE FROM employee_schedule 
+	 		 WHERE id = :id
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="updateLeaveDays">
+	 	<![CDATA[
+	 		 UPDATE employee SET leave_days = (leave_days - :number) WHERE id = :employeeId
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="findScheduleInfoSendMail">
+	 	<![CDATA[
+	 		 SELECT e.full_name AS employeeName, e.email AS employeeEmail, e.leave_days AS leaveDays
+				, d.department_name AS departmentName
+				, (select full_name from employee where id = d.manager) AS managerName
+				FROM employee e INNER JOIN departments d ON d.ID = e.department_id
+				WHERE e.id = :employeeId
+	 	 ]]>
+	</sql-query>
+
+</hibernate-mapping>

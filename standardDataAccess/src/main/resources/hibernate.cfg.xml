@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+		"classpath://org/hibernate/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        
+        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+        
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        <property name = "hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name = "hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        
+        <!-- Localhost -->
+        <property name = "hibernate.connection.url">jdbc:mysql://103.21.151.171:3306/interview?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+        <property name = "hibernate.connection.username">interview</property>
+        <property name = "hibernate.connection.password">NW9tcnfuv4KN</property>
+	
+        <!-- MySQL Server Test 103.21.151.171 -->
+        <!-- <property name = "hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/interview?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+        <property name = "hibernate.connection.username">interview</property>
+        <property name = "hibernate.connection.password">NW9tcnfuv4KN</property> -->
+
+        <!-- c3p0 configure -->         
+        <property name="hibernate.c3p0.min_size">10</property>
+        <property name="hibernate.c3p0.max_size">60</property>
+        <property name="hibernate.c3p0.acquire_increment">5</property>
+        <property name="hibernate.c3p0.timeout">3600</property>
+         
+        <property name="hibernate.connection.CharSet">utf8</property>
+        <property name="hibernate.connection.characterEncoding">utf8</property>
+        <property name="hibernate.connection.useUnicode">true</property>
+         
+        <!-- JDBC connection pool, use Hibernate internal connection pool -->
+        <property name="testOnBorrow">true</property>
+        <property name="validationQuery">select 1</property>
+        <property name="validationInterval">120000</property>
+        <property name="minEvictableIdleTimeMillis">60000</property>
+        <property name="connection.autocommit">false</property>
+        <property name="connection.pool_size">100</property>
+        <property name="cache.provider_class">org.cache.internal.NoCacheProvider</property>
+        <property name="connection.release_mode">after_transaction</property>
+        <property name="max_fetch_depth">2</property>
+        <property name="jdbc.batch_size">200</property>
+        
+        <!-- Show sql -->
+        <property name="show_sql">true</property>
+        <property name="generate_statistics">true</property>
+
+        <!-- Mapping with model class containing annotations -->
+        <mapping class="com.elcom.data.user.entity.User"/>
+        <mapping class="com.elcom.data.user.entity.UserCompany"/>
+        <mapping class="com.elcom.data.interview.entity.Company"/>
+        <mapping class="com.elcom.data.interview.entity.Career"/>
+        <mapping class="com.elcom.data.interview.entity.Job"/>
+        <mapping class="com.elcom.data.interview.entity.Question"/>
+        <mapping class="com.elcom.data.interview.entity.Level"/>
+        <mapping class="com.elcom.data.interview.entity.Procedures"/>
+        <mapping class="com.elcom.data.interview.entity.QuestionJob"/>
+        <mapping class="com.elcom.data.interview.entity.Letter"/>
+        <mapping class="com.elcom.data.interview.entity.Answer"/>
+        <mapping class="com.elcom.data.interview.entity.Rating"/>
+        <mapping class="com.elcom.data.interview.entity.ResultCriteria"/>
+        <mapping class="com.elcom.data.interview.entity.ResultTest"/>
+        <mapping class="com.elcom.data.interview.entity.ProcedureLog"/>
+        <mapping class="com.elcom.data.interview.entity.CallLog"/>
+        <mapping class="com.elcom.data.interview.entity.RatingDefine"/>
+        <mapping class="com.elcom.data.interview.entity.RatingResult"/>
+        <mapping class="com.elcom.data.interview.entity.RatingResultFinal"/>
+        <mapping class="com.elcom.data.interview.entity.LetterInterview"/>
+        <mapping class="com.elcom.data.interview.entity.RatingTemplate"/>
+		
+        <!-- Mapping with resource query  -->
+        <mapping resource="hibernate/user.xml"/>
+        <mapping resource="hibernate/common.xml"/>
+        <mapping resource="hibernate/rating.xml"/>
+        <mapping resource="hibernate/company.xml"/>
+        <mapping resource="hibernate/employee_schedule.xml"/>
+        <mapping resource="hibernate/procedures.xml"/>
+		
+    </session-factory>
+</hibernate-configuration>

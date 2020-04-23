@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <sql-query name="loginCompany">
+        <![CDATA[ SELECT co.id, co.name, co.address, co.email, co.office_phone AS officePhone, co.hotline, co.website, co.status, co.package AS _package
+                                , co.package_start AS packageStart, co.package_end AS packageEnd, co.created_at AS createdAt, co.career_id AS careerId
+                                , co.password, co.salt_value as saltValue, co.logo, co.uuid, COUNT(u.id) as userCount, co.type as companyType
+                                FROM company co
+                                LEFT JOIN user u ON co.id = u.company_id
+                                WHERE co.email = :email
+                                GROUP BY co.id ]]>
+    </sql-query>
+    
+    <sql-query name="insertCompany">
+        <![CDATA[
+                 INSERT INTO company (name, address, email, office_phone, hotline, website, status, package, career_id
+                 , package_start, package_end, password, salt_value, uuid)
+                  VALUES (:name, :address, :email, :office_phone, :hotline, :website, :status, :package, :career_id
+                  , :package_start, :package_end, :password, :salt_value, :uuid)
+         ]]>
+    </sql-query>
+	
+    <sql-query name="updateCompany">
+        <![CDATA[
+                 UPDATE company SET name = :name, address = :address, office_phone = :office_phone, hotline = :hotline, website = :website, status = :status
+                 , package = :package, career_id = :career_id, package_start = :package_start, package_end = :package_end
+                 WHERE id = :id
+         ]]>
+    </sql-query>
+
+    <sql-query name="findDetailCompany">
+        <![CDATA[ SELECT co.id, co.name, co.address, co.email, co.office_phone AS officePhone, co.hotline, co.website, co.status
+       			  , co.created_at AS createdAt, co.career_id AS careerId, co.logo, COUNT(u.id) as userCount
+                  FROM company co
+                  LEFT JOIN user u ON co.id = u.company_id
+                  WHERE co.id = :id
+                  GROUP BY co.id ]]>
+    </sql-query>
+    
+    <sql-query name="loadFromLetter">
+        <![CDATA[ SELECT co.id, co.name, co.address, co.email, co.office_phone AS officePhone, co.hotline, co.website, co.status, co.package AS _package
+                                , co.package_start AS packageStart, co.package_end AS packageEnd, co.created_at AS createdAt, co.career_id AS careerId
+                                , co.password, co.salt_value as saltValue, co.logo, co.uuid
+                                FROM letter l JOIN job j ON l.job_id = j.id
+                                JOIN company co ON co.id = j.company_id
+                                WHERE l.user_to = :userTo
+                                GROUP BY co.id ]]>
+    </sql-query>
+    
+</hibernate-mapping>

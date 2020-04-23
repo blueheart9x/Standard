@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<sql-query name="findJobWithProceduresList">
+        <![CDATA[ SELECT j.id, j.company_id AS companyId, j.career_id AS careerId, j.name, j._group
+        		, j.offer, j.type, j.number, j.content
+        		, j.end_date AS endDate, j.created_at AS createdAt, j.status, j.user_created AS userCreated
+        		, j.user_created_name AS userCreatedName, j.is_admin AS isAdmin, j.template_id AS templateId
+        		, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('name', p.name, 'type', p.type, 'time_test', p.time_test, 'stt', p.stt
+				, 'total', p.total, 'total_point', p.total_point, 'total_question', p.total_question)), ']') AS procedureLst
+				FROM job j
+				INNER JOIN procedures p ON j.id = p.job_id
+				WHERE j.id = :jobId ]]>
+    </sql-query>
+
+	<sql-query name="findDataCompanyForDarshBoard">
+        <![CDATA[ SELECT CONCAT(y, '-', m, '-01') AS dates, Count(c.created_at) AS count
+			FROM (
+			  SELECT y, m
+			  FROM
+			    (SELECT YEAR(CURDATE()) y UNION ALL SELECT YEAR(CURDATE())-1) years,
+			    (SELECT '01' m UNION ALL SELECT '02' UNION ALL SELECT '03' UNION ALL SELECT '04'
+			      UNION ALL SELECT '05' UNION ALL SELECT '06' UNION ALL SELECT '07' UNION ALL SELECT '08'
+			      UNION ALL SELECT '09' UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12) months) ym
+			  LEFT JOIN company c
+			  ON ym.y = YEAR(c.created_at)
+			     AND ym.m = MONTH(c.created_at)
+			WHERE
+			  (y=YEAR(CURDATE()) AND m<=MONTH(CURDATE()))
+			  OR
+			  (y<YEAR(CURDATE()) AND m>MONTH(CURDATE()))
+			GROUP BY y, m ]]>
+    </sql-query>
+    
+    <sql-query name="findDataUserForDarshBoard">
+        <![CDATA[ SELECT CONCAT(y, '-', m, '-01') AS dates, Count(u.created_at) AS count
+			FROM (
+			  SELECT y, m
+			  FROM
+			    (SELECT YEAR(CURDATE()) y UNION ALL SELECT YEAR(CURDATE())-1) years,
+			    (SELECT '01' m UNION ALL SELECT '02' UNION ALL SELECT '03' UNION ALL SELECT '04'
+			      UNION ALL SELECT '05' UNION ALL SELECT '06' UNION ALL SELECT '07' UNION ALL SELECT '08'
+			      UNION ALL SELECT '09' UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12) months) ym
+			  LEFT JOIN user u
+			  ON u.user_type = 3 
+				AND ym.y = YEAR(u.created_at)
+			     AND ym.m = MONTH(u.created_at)
+			WHERE
+			  (y=YEAR(CURDATE()) AND m<=MONTH(CURDATE()))
+			  OR
+			  (y<YEAR(CURDATE()) AND m>MONTH(CURDATE()))
+			GROUP BY y, m ]]>
+    </sql-query>
+	
+</hibernate-mapping>
