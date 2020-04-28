@@ -1,8 +1,8 @@
-package com.elcom.sharedbiz.factory;
+package com.elcom.business.factory;
 
 import com.elcom.data.UnitOfWork;
-import com.elcom.sharedbiz.aggregate.CommonAggregate;
-import com.elcom.sharedbiz.aggregate.UserAggregate;
+import com.elcom.business.aggregate.CommonAggregate;
+import com.elcom.business.aggregate.UserAggregate;
 
 public final class UserFactory {
 

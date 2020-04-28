@@ -1,12 +1,12 @@
-package com.elcom.data.interview.repository;
+package com.elcom.data.repository.standard;
 
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import com.elcom.data.BaseRepository;
-import com.elcom.data.interview.entity.Rating;
+import com.elcom.data.entity.Rating;
 import com.elcom.data.repository.IUpsertRepository;
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 
 public class CommonRepository extends BaseRepository implements IUpsertRepository<User> {
 

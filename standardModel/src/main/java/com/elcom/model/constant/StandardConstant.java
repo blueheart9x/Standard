@@ -13,6 +13,8 @@ public class StandardConstant {
     public static final String MAIL_SEND_PW = "khokhanquanhi123";
     public static final String MAIL_PORT = "465";
     public static final String MAIL_HOST = "smtp.gmail.com";
+    
+    public static final byte[] AES_KEY_VAL = new byte[] { 'e', 'l', 'c', 'o', 'm', 'I', 'n', 't', 'e', 'r', 'v', 'i', 'e', 'w', '@', '!' };
 
     public static final String EP_LINK_SCHEDULE = "http://ep.elcom.com.vn/user/schedules/";
     public static final String SCHEDULE_STATUS_KEY = "SCHEDULE_STAT";

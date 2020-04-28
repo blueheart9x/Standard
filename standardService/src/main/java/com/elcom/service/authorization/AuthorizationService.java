@@ -10,12 +10,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import com.elcom.model.dto.AuthorizationRefreshTokenDTO;
 import com.elcom.model.dto.AuthorizationRequestDTO;
 import com.elcom.model.dto.ResponseSuccess;
 import com.elcom.service.BasedService;
-import com.elcom.sharedbiz.manager.AuthorizationManager;
+import com.elcom.business.manager.AuthorizationManager;
 
 @Path("/v1.0/authorization")
 public class AuthorizationService extends BasedService {
@@ -29,7 +28,7 @@ public class AuthorizationService extends BasedService {
      * is used for Interview Services.
      *
      * @author anhdv
-     * @param email/mobile, password
+     * @param request
      * @return user information that is wrapped in AuthorizationResponseDTO
      * object
      * @throws Exception when email/mobile or password is invalid.
@@ -49,7 +48,7 @@ public class AuthorizationService extends BasedService {
      * services.
      *
      * @author anhdv
-     * @param email, refresh_token
+     * @param request
      * @return a new access_token
      * @throws Exception when email or refresh_token is invalid.
      */
@@ -69,16 +68,14 @@ public class AuthorizationService extends BasedService {
      * verify token whether still valid or not.
      *
      * @author anhdv
-     * @param none
      * @return 200 or 401
+     * @throws java.lang.Exception
      */
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response get() throws Exception {
-
         return this.authorize("standard", () -> {
-
             return ok(new ResponseSuccess());
         });
     }

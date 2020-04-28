@@ -4,7 +4,6 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.elcom.data.interview.entity.Letter</class>
     <class>com.elcom.data.interview.entity.Answer</class>
-    <class>com.elcom.data.interview.entity.Rating</class>
     <class>com.elcom.data.interview.entity.ResultCriteria</class>
     <class>com.elcom.data.interview.entity.ResultTest</class>
     <class>com.elcom.data.interview.entity.ProcedureLog</class>
@@ -14,6 +13,7 @@
     <class>com.elcom.data.interview.entity.RatingResultFinal</class>
     <class>com.elcom.data.interview.entity.LetterInterview</class>
     <class>com.elcom.data.interview.entity.RatingTemplate</class>
+    <class>com.elcom.data.entity.Rating</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://103.21.151.171:3306/interview?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="interview"/>

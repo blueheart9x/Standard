@@ -2,9 +2,9 @@ package com.elcom.service;
 
 import javax.ws.rs.core.HttpHeaders;
 
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 import com.elcom.sharedbiz.dto.UserDTO;
-import com.elcom.sharedbiz.manager.AuthorizationManager;
+import com.elcom.business.manager.AuthorizationManager;
 import com.elcom.sharedbiz.validation.AuthorizationException;
 import com.elcom.util.StringUtils;
 import com.elcom.util.security.Base64Converter;

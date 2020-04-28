@@ -2,7 +2,7 @@ package com.elcom.service;
 
 import java.security.Principal;
 import javax.ws.rs.core.SecurityContext;
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 
 public class BasicSecurityContext implements SecurityContext {
  

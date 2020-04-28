@@ -1,7 +1,7 @@
 package com.elcom.service;
 
-import com.elcom.data.user.entity.User;
-import com.elcom.sharedbiz.manager.AuthorizationManager;
+import com.elcom.data.entity.User;
+import com.elcom.business.manager.AuthorizationManager;
 
 public interface IAuthorization {
 

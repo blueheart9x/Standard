@@ -1,17 +1,19 @@
-package com.elcom.sharedbiz.manager;
+package com.elcom.business.manager;
 
 import java.io.Closeable;
 import java.io.IOException;
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 import com.elcom.model.dto.AuthorizationRefreshTokenDTO;
 import com.elcom.model.dto.AuthorizationRequestDTO;
 import com.elcom.model.dto.AuthorizationResponseDTO;
 import com.elcom.model.dto.AuthorizationResponseDTODetails;
 import com.elcom.model.dto.AuthorizationResponseRefreshTokenDTO;
-import com.elcom.sharedbiz.aggregate.CommonAggregate;
-import com.elcom.sharedbiz.aggregate.UserAggregate;
+import com.elcom.business.aggregate.CommonAggregate;
+import com.elcom.business.aggregate.UserAggregate;
 import com.elcom.sharedbiz.dto.UserDTO;
-import com.elcom.sharedbiz.factory.UserFactory;
+import com.elcom.business.factory.UserFactory;
+import com.elcom.sharedbiz.manager.BaseManager;
+import com.elcom.sharedbiz.manager.JwTokenHelper;
 import com.elcom.sharedbiz.validation.AuthorizationException;
 import com.elcom.sharedbiz.validation.UserValidation;
 import com.elcom.util.security.JWTutils;
@@ -34,22 +36,18 @@ public class AuthorizationManager extends BaseManager implements Closeable {
      * is used for Interview Services.
      *
      * @author anhdv
-     * @param email/mobile, password
+     * @param request
      * @return user information that is wrapped in AuthorizationResponseDTO
      * object
      * @throws Exception when email/mobile or password is invalid.
      */
     public AuthorizationResponseDTO authorized(AuthorizationRequestDTO request) throws Exception {
-
         return this.tryCatch(() -> {
-
             UserValidation.validateAuthorization(request);
-
+            
             User user = getUserInfo(request.getAccountName(), request.getPassword(), "NORMAL");
-
             // Issue a token for the user
             String token = JwTokenHelper.createJWT(user.getUuid());
-
             return new AuthorizationResponseDTO(
                     new AuthorizationResponseDTODetails(
                             token, JWTutils.createToken(user.getUuid()), user.getId(), user.getEmail(), user.getFullName(),
@@ -66,7 +64,7 @@ public class AuthorizationManager extends BaseManager implements Closeable {
      * services.
      *
      * @author anhdv
-     * @param email, refresh_token
+     * @param request
      * @return a new access_token
      * @throws Exception when email or refresh_token is invalid.
      */
@@ -90,18 +88,13 @@ public class AuthorizationManager extends BaseManager implements Closeable {
     }
 
     private User getUserInfo(String accountName, String password, String loginType) throws Exception {
-
-        //User user = _commonAgg.login(accountName, password, loginType);
-        User user = null;
-
+        User user = _uAgg.login(accountName, password, loginType);
         if (user == null) {
             throw new AuthorizationException("This account is invalid.");
         }
-
         if (user.getStatus() == 0) {
             throw new AuthorizationException("This account is locked.");
         }
-
         return user;
     }
 

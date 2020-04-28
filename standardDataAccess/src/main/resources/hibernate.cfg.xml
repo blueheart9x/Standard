@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration SYSTEM
-		"classpath://org/hibernate/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration SYSTEM "classpath://org/hibernate/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        
+        <!-- Driver -->
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
-        
         <property name="hibernate.current_session_context_class">thread</property>
-        
         <property name = "hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name = "hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         
-        <!-- Localhost -->
-        <property name = "hibernate.connection.url">jdbc:mysql://103.21.151.171:3306/interview?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
-        <property name = "hibernate.connection.username">interview</property>
-        <property name = "hibernate.connection.password">NW9tcnfuv4KN</property>
+        <!-- DB info -->
+        <property name = "hibernate.connection.url">jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
+        <property name = "hibernate.connection.username">test</property>
+        <property name = "hibernate.connection.password">test</property>
 	
         <!-- MySQL Server Test 103.21.151.171 -->
         <!-- <property name = "hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/interview?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property>
@@ -27,6 +24,7 @@
         <property name="hibernate.c3p0.acquire_increment">5</property>
         <property name="hibernate.c3p0.timeout">3600</property>
          
+         <!-- Charset -->
         <property name="hibernate.connection.CharSet">utf8</property>
         <property name="hibernate.connection.characterEncoding">utf8</property>
         <property name="hibernate.connection.useUnicode">true</property>
@@ -48,35 +46,9 @@
         <property name="generate_statistics">true</property>
 
         <!-- Mapping with model class containing annotations -->
-        <mapping class="com.elcom.data.user.entity.User"/>
-        <mapping class="com.elcom.data.user.entity.UserCompany"/>
-        <mapping class="com.elcom.data.interview.entity.Company"/>
-        <mapping class="com.elcom.data.interview.entity.Career"/>
-        <mapping class="com.elcom.data.interview.entity.Job"/>
-        <mapping class="com.elcom.data.interview.entity.Question"/>
-        <mapping class="com.elcom.data.interview.entity.Level"/>
-        <mapping class="com.elcom.data.interview.entity.Procedures"/>
-        <mapping class="com.elcom.data.interview.entity.QuestionJob"/>
-        <mapping class="com.elcom.data.interview.entity.Letter"/>
-        <mapping class="com.elcom.data.interview.entity.Answer"/>
-        <mapping class="com.elcom.data.interview.entity.Rating"/>
-        <mapping class="com.elcom.data.interview.entity.ResultCriteria"/>
-        <mapping class="com.elcom.data.interview.entity.ResultTest"/>
-        <mapping class="com.elcom.data.interview.entity.ProcedureLog"/>
-        <mapping class="com.elcom.data.interview.entity.CallLog"/>
-        <mapping class="com.elcom.data.interview.entity.RatingDefine"/>
-        <mapping class="com.elcom.data.interview.entity.RatingResult"/>
-        <mapping class="com.elcom.data.interview.entity.RatingResultFinal"/>
-        <mapping class="com.elcom.data.interview.entity.LetterInterview"/>
-        <mapping class="com.elcom.data.interview.entity.RatingTemplate"/>
+        <mapping class="com.elcom.data.entity.User"/>
 		
         <!-- Mapping with resource query  -->
         <mapping resource="hibernate/user.xml"/>
-        <mapping resource="hibernate/common.xml"/>
-        <mapping resource="hibernate/rating.xml"/>
-        <mapping resource="hibernate/company.xml"/>
-        <mapping resource="hibernate/employee_schedule.xml"/>
-        <mapping resource="hibernate/procedures.xml"/>
-		
     </session-factory>
 </hibernate-configuration>

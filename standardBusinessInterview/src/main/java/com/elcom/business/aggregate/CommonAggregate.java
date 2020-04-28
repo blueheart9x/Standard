@@ -1,7 +1,7 @@
-package com.elcom.sharedbiz.aggregate;
+package com.elcom.business.aggregate;
 
 import com.elcom.data.UnitOfWork;
-import com.elcom.data.interview.entity.Rating;
+import com.elcom.data.entity.Rating;
 
 public class CommonAggregate {
 
@@ -12,7 +12,6 @@ public class CommonAggregate {
     }
 
     public boolean insertRating(Rating item) {
-        return this._uok.vi.commonRepository().insertRating(item);
+        return this._uok.commonRepository().insertRating(item);
     }
-
 }

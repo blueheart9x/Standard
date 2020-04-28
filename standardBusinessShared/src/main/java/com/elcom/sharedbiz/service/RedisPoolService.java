@@ -15,25 +15,18 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 public final class RedisPoolService {
 
     private static final Logger logger = Logger.getLogger(RedisPoolService.class.getName());
-
     private static RedisPoolService instance;
-
     private JedisPool pool = null;
-
     private static ReentrantLock lock = new ReentrantLock();
 
     private RedisPoolService() {
-
         jedisPoolConfig();
     }
 
     //public static synchronized RedisPoolService getInstance() { // TODO Mở lại nếu chạy gặp vấn đề
     public static RedisPoolService getInstance() {
-
         lock.lock();
-
         try {
-
             if (instance == null) {
                 synchronized (RedisPoolService.class) {
                     instance = new RedisPoolService();
@@ -43,20 +36,18 @@ public final class RedisPoolService {
         } finally {
             lock.unlock();
         }
-
         return instance;
     }
 
     private void jedisPoolConfig() {
-
         JedisPoolConfig poolConfig = buildPoolConfig();
 
         // Pool, host, port, isSSL
         /* Localhost */
         pool = new JedisPool(poolConfig,
-                 StandardConstant.REDIS_HOST,
-                 StandardConstant.REDIS_PORT,
-                 StandardConstant.REDIS_SSL
+                StandardConstant.REDIS_HOST,
+                StandardConstant.REDIS_PORT,
+                StandardConstant.REDIS_SSL
         );
 
         /* SERVER TEST */
@@ -68,13 +59,9 @@ public final class RedisPoolService {
 		        		, StandardConstant.REDIS_SSL
 					);*/
         try {
-
             pool.getResource();
-
         } catch (JedisConnectionException e) {
-
             logger.error("jedisPoolConfig().ex: " + e.toString() + "\n*** SHUT DOWN APP *** ");
-
             System.exit(0);
         }
     }
@@ -82,7 +69,6 @@ public final class RedisPoolService {
     private JedisPoolConfig buildPoolConfig() {
 
         final JedisPoolConfig poolConfig = new JedisPoolConfig();
-
         poolConfig.setMaxTotal(128);
         poolConfig.setMaxIdle(128);
         poolConfig.setMinIdle(16);

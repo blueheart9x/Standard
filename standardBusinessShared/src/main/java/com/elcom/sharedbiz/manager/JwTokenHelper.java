@@ -8,7 +8,7 @@ import java.util.function.Function;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -17,7 +17,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
  
 public class JwTokenHelper {
 
-	// The privateKey is only valid for the given minutes
+    // The privateKey is only valid for the given minutes
     //private static final long EXPIRATION_LIMIT_IN_MINUTES = 60;
  
     // The JWT signature algorithm we will be using to sign the token

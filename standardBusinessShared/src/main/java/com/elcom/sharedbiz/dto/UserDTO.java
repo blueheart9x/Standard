@@ -3,7 +3,7 @@ package com.elcom.sharedbiz.dto;
 import java.io.Serializable;
 import java.util.List;
 
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 import com.elcom.model.dto.MenuFunctionDTO;
 
 public class UserDTO extends User implements Serializable {

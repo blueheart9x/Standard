@@ -22,11 +22,11 @@ import javax.ws.rs.core.StreamingOutput;
 import com.elcom.common.Labels;
 import com.elcom.common.Messages;
 import com.elcom.data.exception.NoRecordFoundException;
-import com.elcom.model.dto.interview.ResponseData;
-import com.elcom.model.dto.interview.ResponseDataPaging;
+import com.elcom.model.dto.ResponseData;
+import com.elcom.model.dto.ResponseDataPaging;
 import com.elcom.model.enums.AuthorizationToken;
 import com.elcom.model.object.AuthorizationTokenResult;
-import com.elcom.sharedbiz.manager.AuthorizationManager;
+import com.elcom.business.manager.AuthorizationManager;
 import com.elcom.sharedbiz.manager.JwTokenHelper;
 import com.elcom.sharedbiz.validation.AuthorizationException;
 import com.elcom.sharedbiz.validation.ValidationException;
@@ -140,14 +140,12 @@ public class BasedService {
     }
 
     protected <T> T authorize(String authType, Callable<T> func) throws Exception {
-
         if ("standard".equals(authType)) {
             validateToken();
-        } else // refresh
-        {
+        } else {
+            // refresh
             validateRefreshToken();
         }
-
         return func.call();
     }
 
@@ -156,32 +154,22 @@ public class BasedService {
     }
 
     private void validateToken() throws Exception {
-
         try (AuthorizationManager manager = new AuthorizationManager()) {
-
-            //IAuthorization authorization = null;
             AuthorizationTokenResult result = _authorization.processHeader();
-
             if (result.getTokenEnum() == AuthorizationToken.BEARER) {
-
+                //System.out.println("token: " + result.getToken() + ", identity: " + result.getIdentity());
                 String token = result.getToken();
-
                 try {
-
                     if (JwTokenHelper.isTokenExpired(token)) {
                         throw new AuthorizationException("Token is expired!");
                     }
-
                     String identity = result.getIdentity();
                     String identityFromToken = JwTokenHelper.getIdentityFromToken(token);
                     if (!identity.equals(identityFromToken)) {
                         throw new AuthorizationException("Unauthorized.");
                     }
-
                 } catch (Exception ex) {
-
                     System.out.println("validateToken.ex: " + ex.toString());
-
                     if (ex instanceof ExpiredJwtException) {
                         throw new AuthorizationException("Token is expired!");
                     } else if (ex instanceof MalformedJwtException) {
@@ -191,14 +179,7 @@ public class BasedService {
                     }
                 }
             }
-
-            /*if(result.getTokenEnum() == AuthorizationToken.BASIC) {
-				
-				authorization = new BasicAuthorization(null);
-				authorization.authorize(result.getToken());
-			}*/
         } catch (NoRecordFoundException ex) {
-
             throw new AuthorizationException("Unauthorized");
         }
     }

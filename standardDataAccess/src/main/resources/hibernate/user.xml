@@ -4,12 +4,40 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
+	<!-- <sql-query name="findJobWithProceduresByUserId">
+	 	<![CDATA[ 
+	 		SELECT l.job_name as jobName, l.created_at as createdAt, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('name', p.name, 'type', p.type)), ']') AS procedureLst
+			FROM letter l INNER JOIN procedures p ON p.id = l.procedure_id
+			WHERE l.user_to = :userId AND l.company_id = :companyId
+			GROUP BY l.job_name ORDER BY l.created_at desc
+	 	 ]]>
+	</sql-query> -->
+	
+	<sql-query name="deleteUser">
+        <![CDATA[
+        	UPDATE user_company SET is_delete = 1 WHERE user_id = :id AND company_id = :companyId 
+        ]]>
+    </sql-query>
+	
+	<sql-query name="findJobWithProceduresByUserId">
+	 	<![CDATA[ 
+	 		SELECT t.id, t.email, t.full_name AS fullName, t.mobile, t.link_cv AS linkCv, t.avatar
+			, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('job_name', t.job_name, 'created_at', t.created_at, 'procedureLst', t.procedureLst)), ']') AS jobLst
+			FROM (select u.id, u.email, uc.full_name, uc.mobile, uc.link_cv, uc.avatar, l.job_name, l.created_at
+			, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('name', p.name, 'type', p.type, 'status', l.status)), ']') AS procedureLst
+			FROM user u INNER JOIN user_company uc ON u.id = uc.user_id
+			LEFT JOIN letter l ON u.id = l.user_to
+			LEFT JOIN procedures p ON p.id = l.procedure_id
+			WHERE u.uuid = :uuid AND uc.is_delete = 0 AND uc.company_id = :companyId
+			GROUP BY l.job_name ORDER BY l.created_at DESC) t
+	 	 ]]>
+	</sql-query>
+
 	<sql-query name="login">
 	 	<![CDATA[ SELECT u.id, u.email, u.password, u.salt_value as saltValue, u.full_name as fullName, u.mobile, u.skype, u.facebook
 	 				, u.avatar, u.user_type as userType, u.status, u.created_at as createdAt, u.last_login as lastLogin
-	 				, u.uuid, u.address, u.company_id as companyId, c.name as companyName, c.career_id as careerId, c.type as companyType
-	 				FROM user u LEFT JOIN company c ON c.id = u.company_id
-			 	 	WHERE (u.email = :accountName or u.mobile = :accountName) ]]>
+	 				, u.uuid, u.address, u.company_id as companyId
+	 				FROM user u WHERE (u.email = :accountName or u.mobile = :accountName) ]]>
 	</sql-query>
 	
 	<sql-query name="findUserByUUID">
@@ -44,8 +72,8 @@
 	
 	<sql-query name="updateUserCompany">
 	 	<![CDATA[
-	 		 UPDATE user_company SET link_cv = :link_cv
-	 		 WHERE user_id = :user_id AND company_id = :company_id
+	 		 UPDATE user_company SET link_cv = :linkCv, full_name = :fullName, mobile = :mobile, avatar = :avatar
+	 		 WHERE user_id = :userId AND company_id = :companyId
 	 	 ]]>
 	</sql-query>
 	
@@ -105,11 +133,21 @@
 	
 	<sql-query name="findDetailUserInterview">
 	 	<![CDATA[ 
-	 		SELECT u.full_name as fullName, u.mobile, u.avatar, u.address, l.job_name as jobName, l.link_cv as linkCv
+	 		SELECT l.id AS letterId, l.job_id AS jobId, l.appointment_time AS appointmentTime, uc.full_name AS fullName, uc.mobile
+	 		, uc.link_cv AS linkCv, uc.avatar, l.job_name AS jobName 
 	 		, GROUP_CONCAT(li.full_name SEPARATOR '###') AS peopleLstStr
-			FROM letter l INNER JOIN _letter_interview li ON l.id = li.letter_id
-			INNER JOIN user u ON u.id = l.user_to
-			WHERE l.password = :pw
+	 		, !(appointment_time <= CURRENT_TIMESTAMP + INTERVAL :beforeMinute MINUTE) AS earlyIntoRoom
+			FROM letter l
+			INNER JOIN _letter_interview li ON l.id = li.letter_id
+			INNER JOIN user_company uc ON (uc.user_id = l.user_to AND uc.company_id = l.company_id)
+			WHERE l.password = :pw AND l.status IN (1, 3)
+	 	 ]]>
+	</sql-query>
+	
+	<sql-query name="setManualNoticeMethod">
+	 	<![CDATA[ 
+	 		UPDATE _letter_interview SET notice_method = 'MANUAL'
+			WHERE letter_id = :letterId AND user_id = :userId AND notice_method = 'AUTO'
 	 	 ]]>
 	</sql-query>
 	

@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
-import com.elcom.data.user.entity.User;
+import com.elcom.data.entity.User;
 import com.elcom.service.BasicSecurityContext;
 import com.elcom.sharedbiz.manager.JwTokenHelper;
 import com.sun.jersey.core.util.Priority;

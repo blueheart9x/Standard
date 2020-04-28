@@ -1,4 +1,4 @@
-package com.elcom.data.user.entity;
+package com.elcom.data.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

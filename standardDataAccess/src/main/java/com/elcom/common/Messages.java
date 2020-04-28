@@ -10,13 +10,13 @@ public final class Messages {
     private static final String BUNDLE_NAME = "message/messages";
     private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, new Locale("vi", "VN"));
     private static Locale locale = new Locale("vi", "VN");
-    
+
     private Messages() {
     }
 
     public static void setLocale(Locale lo) {
-    	locale = lo;
-    	RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
+        locale = lo;
+        RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 
     public static String getString(String key) {
@@ -27,7 +27,7 @@ public final class Messages {
         }
     }
 
-    public static String getString(String key, Object... params  ) {
+    public static String getString(String key, Object... params) {
         try {
             return MessageFormat.format(RESOURCE_BUNDLE.getString(key), params);
         } catch (MissingResourceException e) {
@@ -35,4 +35,3 @@ public final class Messages {
         }
     }
 }
-
