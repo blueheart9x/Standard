@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.elcom.restcore.constants;
 
@@ -8,6 +8,5 @@ package com.elcom.restcore.constants;
  *
  */
 public class RestConstants {
-	
-	public static int REQ_TIME_OUT = 20000; //In miliseconds
+    public static int REQ_TIME_OUT = 20000; //In miliseconds
 }
