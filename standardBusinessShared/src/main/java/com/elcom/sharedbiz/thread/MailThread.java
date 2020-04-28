@@ -2,7 +2,7 @@ package com.elcom.sharedbiz.thread;
 
 import java.util.List;
 import org.apache.log4j.Logger;
-import com.elcom.model.constant.InterviewConstant;
+import com.elcom.model.constant.StandardConstant;
 import com.elcom.sharedbiz.mail.SendMail;
 import com.elcom.sharedbiz.mail.ToMail;
 import com.elcom.sharedbiz.manager.BaseManager;
@@ -26,10 +26,10 @@ public class MailThread extends BaseManager implements Runnable {
     }
 
     public void sendMail() {
-        new SendMail().sendMail(InterviewConstant.MAIL_HOST,
-                 InterviewConstant.MAIL_PORT,
-                 InterviewConstant.MAIL_SEND_ACC,
-                 InterviewConstant.MAIL_SEND_PW, "",
+        new SendMail().sendMail(StandardConstant.MAIL_HOST,
+                 StandardConstant.MAIL_PORT,
+                 StandardConstant.MAIL_SEND_ACC,
+                 StandardConstant.MAIL_SEND_PW, "",
                  this.title, this.content, this.listToMail);
     }
 

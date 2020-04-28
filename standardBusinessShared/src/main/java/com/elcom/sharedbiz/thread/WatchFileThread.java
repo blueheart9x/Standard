@@ -26,7 +26,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 
 import com.elcom.data.factory.HibernateMySQLFactory;
-import com.elcom.model.constant.InterviewConstant;
+import com.elcom.model.constant.StandardConstant;
 
 /** 
  * Phát hiện file mới tạo, đọc file và xử lý insert vào bảng MEDIA.
@@ -106,26 +106,26 @@ public class WatchFileThread implements Runnable {
             				  
             				  String fullPathFile = "";
             				  folderName = content.substring(content.indexOf("/recordings/")+12, content.length()-1);
-            				  File folder = new File(InterviewConstant.RECORD_FOLDER + "/" + folderName);
+            				  File folder = new File(StandardConstant.RECORD_FOLDER + "/" + folderName);
             				  File[] files = folder.listFiles((dir1, fileName) -> fileName.endsWith(".mp4"));
             				  for(File f: files) {
-            					  fullPathFile = InterviewConstant.RECORD_FOLDER + "/" + folderName + "/" + f.getName();
+            					  fullPathFile = StandardConstant.RECORD_FOLDER + "/" + folderName + "/" + f.getName();
       			       		  }
             				  
-            				  /*File folder = new File(InterviewConstant.RECORD_FOLDER + filePath);
+            				  /*File folder = new File(StandardConstant.RECORD_FOLDER + filePath);
             				  List<String> result = new ArrayList<>();
             				  search(".*\\.mp4", folder, result);
             				  for (String s : result) {
-            					  System.out.println(InterviewConstant.RECORD_FOLDER + filePath + "/" + s);
+            					  System.out.println(StandardConstant.RECORD_FOLDER + filePath + "/" + s);
             				  }*/
             				  
-            				  /*try (Stream<Path> walk = Files.walk(Paths.get(InterviewConstant.RECORD_FOLDER + filePath))) {
+            				  /*try (Stream<Path> walk = Files.walk(Paths.get(StandardConstant.RECORD_FOLDER + filePath))) {
             			            // We want to find only regular files
             			            List<String> result = walk.filter(Files::isRegularFile)
             			                    .map(x -> x.toString()).collect(Collectors.toList());
 
             			            for(String s: result) {
-            			       			System.out.println(InterviewConstant.RECORD_FOLDER + filePath + "/" + s);
+            			       			System.out.println(StandardConstant.RECORD_FOLDER + filePath + "/" + s);
             			       		}
             			            
             			        } catch (IOException e) {
@@ -238,7 +238,7 @@ public class WatchFileThread implements Runnable {
         try {
         	synchronized (WatchFileThread.class) {
         		//Path dir = Paths.get("D:\\app");
-        		Path dir = Paths.get(InterviewConstant.RECORD_LOG_FOLDER);
+        		Path dir = Paths.get(StandardConstant.RECORD_LOG_FOLDER);
         		this.doTask(dir);
         	}
         } catch (Exception ex) {

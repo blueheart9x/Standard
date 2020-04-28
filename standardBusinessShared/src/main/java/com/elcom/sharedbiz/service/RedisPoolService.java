@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
-import com.elcom.model.constant.InterviewConstant;
+import com.elcom.model.constant.StandardConstant;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -54,18 +54,18 @@ public final class RedisPoolService {
         // Pool, host, port, isSSL
         /* Localhost */
         pool = new JedisPool(poolConfig,
-                 InterviewConstant.REDIS_HOST,
-                 InterviewConstant.REDIS_PORT,
-                 InterviewConstant.REDIS_SSL
+                 StandardConstant.REDIS_HOST,
+                 StandardConstant.REDIS_PORT,
+                 StandardConstant.REDIS_SSL
         );
 
         /* SERVER TEST */
  /*pool = new JedisPool(poolConfig
-		        		, InterviewConstant.REDIS_HOST
-		        		, InterviewConstant.REDIS_PORT
-		        		, InterviewConstant.REDIS_TIME_OUT
-		        		, InterviewConstant.REDIS_PASSWORD
-		        		, InterviewConstant.REDIS_SSL
+		        		, StandardConstant.REDIS_HOST
+		        		, StandardConstant.REDIS_PORT
+		        		, StandardConstant.REDIS_TIME_OUT
+		        		, StandardConstant.REDIS_PASSWORD
+		        		, StandardConstant.REDIS_SSL
 					);*/
         try {
 

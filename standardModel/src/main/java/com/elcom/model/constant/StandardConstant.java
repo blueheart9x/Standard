@@ -1,6 +1,6 @@
 package com.elcom.model.constant;
 
-public class InterviewConstant {
+public class StandardConstant {
 
     /* REDIS SERVER TEST 103.21.151.171 */
     public static final String REDIS_HOST = "127.0.0.1";
