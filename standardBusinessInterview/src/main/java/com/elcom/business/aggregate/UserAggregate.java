@@ -28,9 +28,20 @@ public class UserAggregate {
         }
         return user;
     }
+    
+    public User findUserByUUID(String uuid) throws AuthorizationException {
+        User user = null;
+        try {
+            user = this._uok.usersRepository().findUserByUUID(uuid);
+        } catch (Throwable ex) {
+            System.out.println("UserAggregate.findUserByUUID.ex: " + ex.toString());
+            throw new AuthorizationException("UUID is invalid.");
+        }
+        return user;
+    }
 
     public UserDTO getUserInfoBy(String email) throws ValidationException, NoRecordFoundException {
-        User user = null;//this._uok.user.usersRepository().findUserInfoBy(email);
+        User user = this._uok.usersRepository().findUserInfoBy(email);
         return user != null ? modelMapper.map(user, UserDTO.class) : null;
     }
 

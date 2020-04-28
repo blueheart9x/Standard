@@ -193,9 +193,7 @@ public class UsersRepository extends BaseRepository implements IUpsertRepository
 
     @SuppressWarnings("deprecation")
     public User findUserByUUID(String uuid) {
-
         User user = null;
-
         try {
             @SuppressWarnings("rawtypes")
             NativeQuery query = this.session.getNamedNativeQuery("findUserByUUID");
@@ -215,15 +213,12 @@ public class UsersRepository extends BaseRepository implements IUpsertRepository
             query.addScalar("lastLogin", StandardBasicTypes.TIMESTAMP);
             query.addScalar("uuid", StandardBasicTypes.STRING);
             query.addScalar("address", StandardBasicTypes.STRING);
-            query.addScalar("companyName", StandardBasicTypes.STRING);
             query.setResultTransformer(Transformers.aliasToBean(User.class));
 
             user = (User) query.uniqueResult();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return user;
     }
 
@@ -293,9 +288,10 @@ public class UsersRepository extends BaseRepository implements IUpsertRepository
 
     @SuppressWarnings("deprecation")
     public User findUserInfoBy(String email) throws NoRecordFoundException {
-
         @SuppressWarnings("rawtypes")
-        NativeQuery query = this.session.createNativeQuery(" SELECT id, login_id as loginId, email, full_name as fullName, status, company_id as companyId FROM users WHERE email = :emailAddress ");
+        NativeQuery query = this.session.createNativeQuery(" "
+                + "SELECT id, login_id as loginId, email, full_name as fullName, "
+                + "status, company_id as companyId FROM users WHERE email = :emailAddress ");
         query.setParameter("emailAddress", email.trim());
         query.addScalar("id", StandardBasicTypes.LONG);
         query.addScalar("loginId", StandardBasicTypes.STRING);
@@ -304,14 +300,12 @@ public class UsersRepository extends BaseRepository implements IUpsertRepository
         query.addScalar("status", StandardBasicTypes.INTEGER);
         query.addScalar("companyId", StandardBasicTypes.LONG);
         query.setResultTransformer(Transformers.aliasToBean(User.class));
-
         Object obj = null;
         try {
             obj = query.getSingleResult();
         } catch (NoResultException ex) {
             throw new NoRecordFoundException("User not found!");
         }
-
         return obj != null ? (User) obj : null;
     }
 

@@ -43,9 +43,8 @@
 	<sql-query name="findUserByUUID">
 	 	<![CDATA[ SELECT u.id, u.email, u.password, u.salt_value as saltValue, u.full_name as fullName, u.mobile, u.skype, u.facebook
 	 				, u.avatar, u.user_type as userType, u.status, u.created_at as createdAt, u.last_login as lastLogin
-	 				, u.uuid, u.address, c.name as companyName
- 				 FROM user u LEFT JOIN company c ON c.id = u.company_id
-		 	 	 WHERE u.uuid = :uuid ]]>
+	 				, u.uuid, u.address 
+ 				 FROM user u WHERE u.uuid = :uuid ]]>
 	</sql-query>
 	
 	<sql-query name="findUserByUUIDToUpdate">

@@ -69,20 +69,14 @@ public class AuthorizationManager extends BaseManager implements Closeable {
      * @throws Exception when email or refresh_token is invalid.
      */
     public AuthorizationResponseRefreshTokenDTO refreshToken(AuthorizationRefreshTokenDTO request) throws Exception {
-
         return this.tryCatch(() -> {
-
             UserValidation.validateRefreshToken(request);
-
             if (!request.getUuid().equals(JWTutils.getContentInToken(request.getRefreshToken()))) {
                 throw new AuthorizationException("Refresh token is invalid!");
             }
-
-            User user = null;//getUserInfoByUUID(request.getUuid());
-
+            User user = getUserInfoByUUID(request.getUuid());
             // Issue a token for the user
             String token = JwTokenHelper.createJWT(user.getUuid());
-
             return new AuthorizationResponseRefreshTokenDTO(token);
         });
     }
@@ -97,21 +91,28 @@ public class AuthorizationManager extends BaseManager implements Closeable {
         }
         return user;
     }
+    
+    private User getUserInfoByUUID(String uuid) throws Exception {
+        User user = _uAgg.findUserByUUID(uuid);
+        if (user == null) {
+            throw new AuthorizationException("This account is invalid.");
+        }
+        if (user.getStatus() == 0) {
+            throw new AuthorizationException("This account is locked.");
+        }
+        return user;
+    }
 
     public UserDTO authorized(String email, String password) throws AuthorizationException, Exception {
 
         return this.tryCatch(() -> {
-
             User user = _uAgg.login(email, password, "NORMAL");
-
             if (user == null) {
                 throw new AuthorizationException("This account is invalid.");
             }
-
             if (user.getStatus() == 0) {
                 throw new AuthorizationException("This account is locked.");
             }
-
             return _uAgg.getUserInfoBy(email);
         });
     }

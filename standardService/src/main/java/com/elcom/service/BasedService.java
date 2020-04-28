@@ -185,35 +185,24 @@ public class BasedService {
     }
 
     private void validateRefreshToken() throws Exception {
-
         try (AuthorizationManager manager = new AuthorizationManager()) {
-
             AuthorizationTokenResult result = _authorization.processHeader();
-
             if (result.getTokenEnum() == AuthorizationToken.BEARER) {
-
                 String token = result.getToken();
-
                 String epIdentity = "";
                 String identityFromToken = "";
 
                 try {
-
                     epIdentity = result.getIdentity();
+                    //System.out.println("token: " + token + ", identity: " + epIdentity);
                     identityFromToken = JwTokenHelper.getIdentityFromToken(token);
-
                     if (!epIdentity.equals(identityFromToken)) {
                         throw new AuthorizationException("Unauthorized.");
                     }
-
                 } catch (Exception ex) {
-
                     System.out.println("validateRefreshToken.ex: " + ex.toString());
-
                     if (ex instanceof ExpiredJwtException) {
-
                         identityFromToken = ((ExpiredJwtException) ex).getClaims().getSubject();
-
                         if (!epIdentity.equals(identityFromToken)) {
                             throw new AuthorizationException("Unauthorized.");
                         }
@@ -229,6 +218,7 @@ public class BasedService {
 
             throw new AuthorizationException("Unauthorized");
         }
+        //System.out.println("=========validateRefreshToken : OKKKKKKKKKKKKK");
     }
 
     /*private void validatePermission(ServiceName serviceName) throws Exception {
