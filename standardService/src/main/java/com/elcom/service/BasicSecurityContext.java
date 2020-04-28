@@ -1,9 +1,7 @@
 package com.elcom.service;
 
 import java.security.Principal;
-
 import javax.ws.rs.core.SecurityContext;
-
 import com.elcom.data.user.entity.User;
 
 public class BasicSecurityContext implements SecurityContext {
@@ -12,7 +10,6 @@ public class BasicSecurityContext implements SecurityContext {
     private boolean secure;
  
     public BasicSecurityContext(User user, boolean secure) {
-    	
         this.user = user;
         this.secure = secure;
     }
